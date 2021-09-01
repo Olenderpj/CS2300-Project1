@@ -9,12 +9,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class Project1 {
-    public static ArrayList<Matrix> matrices;
+    public static ArrayList<Matrix> matrices = new ArrayList<>();
     public static Path filePath = Path.of("TestFiles/matrixFile.txt");
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -26,12 +25,15 @@ public class Project1 {
                     ArrayList<String> matrixArray = convertMatrixDataToArray(line);
                     Matrix matrix = buildMatrixObject(matrixArray);
                     matrices.add(matrix);
+                    matrix.buildColumnWiseMatrix();
+                    matrix.buildRowWiseMatrix();
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.print(matrices);
+
+
     }
 
     public static ArrayList<String> convertMatrixDataToArray(final String matrixData){
@@ -48,8 +50,8 @@ public class Project1 {
     public static Matrix buildMatrixObject(final ArrayList<String> matrixData){
         Matrix matrix = new Matrix();
         matrix.setVariableName(matrixData.get(0))
-                .setHeight(Integer.parseInt(matrixData.get(1)))
-                .setWidth(Integer.parseInt(matrixData.get(2)))
+                .setRows(Integer.parseInt(matrixData.get(1)))
+                .setColumns(Integer.parseInt(matrixData.get(2)))
                 .setMatrixData(convertArraylistFromStringToInt(matrixData.subList(3, matrixData.size())));
         return matrix;
     }
