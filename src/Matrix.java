@@ -8,9 +8,18 @@ public class Matrix {
     private int columns;
     private ArrayList<Integer> matrixData;
     private ArrayList<Double> multipliedMatrixData;
-    private ArrayList matrixColumns = new ArrayList();
-    private ArrayList matrixRows = new ArrayList();
+    private ArrayList<ArrayList<Double>> matrixColumns = new ArrayList<>();
+    private ArrayList<ArrayList<Double>> matrixRows = new ArrayList();
+
     private Logger logger = Logger.getAnonymousLogger();
+
+    public ArrayList getMatrixColumns() {
+        return matrixColumns;
+    }
+
+    public ArrayList getMatrixRows() {
+        return matrixRows;
+    }
 
     public String getVariableName() {
         return variableName;
@@ -20,12 +29,16 @@ public class Matrix {
         return rows;
     }
 
-    public int getWidth() {
+    public int getColumns() {
         return columns;
     }
 
     public ArrayList getMatrixData() {
         return matrixData;
+    }
+
+    public ArrayList<Double> getMultipliedMatrixData() {
+        return multipliedMatrixData;
     }
 
     public Matrix setVariableName(String variableName) {
@@ -54,8 +67,12 @@ public class Matrix {
         int endIndex = rows;
 
         while (endIndex <= stopPoint){
-            List matrixColumn = matrixData.subList(startIndex, endIndex);
-            matrixColumns.add(matrixColumn);
+            List<Integer> sublist = matrixData.subList(startIndex, endIndex);
+            ArrayList<Double> tempList = new ArrayList<>();
+            for (double value: sublist){
+                tempList.add(value);
+            }
+            matrixColumns.add(tempList);
             startIndex += rows;
             endIndex += rows;
         }
@@ -67,19 +84,18 @@ public class Matrix {
         }
     }
 
-    private ArrayList<Integer> findEveryNthElement(final int start, final int steps, final ArrayList matrix){
-        ArrayList<Integer> rowData= new ArrayList<>();
+    private ArrayList<Double> findEveryNthElement(final int start, final int steps, final ArrayList matrix){
+        ArrayList<Double> rowData= new ArrayList<>();
 
         for(int i = start; i < matrix.size(); i += steps){
-            rowData.add(Integer.parseInt(matrix.get(i).toString()));
+            rowData.add(Double.parseDouble(matrix.get(i).toString()));
         }
         return rowData;
     }
 
-    public void multiplyMatrix(double coefficient, ArrayList<Integer> matrix){
+    public void multiplyMatrix(double coefficient){
         ArrayList<Double> newMatrix = new ArrayList<>();
-
-        for(Integer number: matrix){
+        for(Integer number: matrixData){
             newMatrix.add(number * coefficient);
         }
         multipliedMatrixData = newMatrix;
@@ -91,13 +107,29 @@ public class Matrix {
         }
     }
 
+    public String getMatrixMetadata(){
+        String metadata = "";
+        metadata += variableName + " ";
+        metadata += rows + " ";
+        metadata += columns + " ";
+
+        for (Integer data : matrixData) {
+           metadata += data.toString() + " ";
+        }
+        return metadata;
+    }
+
+
     @Override
-    public String toString() {
+    public String toString(){
         return "Matrix{" +
                 "variableName='" + variableName + '\'' +
-                ", height=" + rows +
-                ", width=" + columns +
+                ", rows=" + rows +
+                ", columns=" + columns +
                 ", matrixData=" + matrixData +
+                ", multipliedMatrixData=" + multipliedMatrixData +
+                ", matrixColumns=" + matrixColumns +
+                ", matrixRows=" + matrixRows +
                 '}';
     }
 }
