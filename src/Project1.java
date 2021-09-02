@@ -2,6 +2,7 @@
  * Name: PJ Olender
  * Class: CS 2300 Fall 2021
  * Due Date: 9/14/2021
+ * Project 1, matrix calculations
  */
 
 import java.io.File;
@@ -12,7 +13,9 @@ import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public class Project1 {
@@ -37,29 +40,43 @@ public class Project1 {
             e.printStackTrace();
         }
 
-        System.out.println("First Matrix:");
-        matrices.get(0).printRowWiseMatrix();
-        System.out.println("\nSecond Matrix:");
-        matrices.get(1).printRowWiseMatrix();
+        printFormattedMatrix("First Matrix", matrices.get(0).getMatrixRows());
+        printFormattedMatrix("Second Matrix", matrices.get(1).getMatrixRows());
+
         createNewTextFile("FirstMatrix");
         writeToFile("FirstMatrix.txt", matrices.get(0));
         createNewTextFile("SecondMatrix");
         writeToFile("SecondMatrix.txt", matrices.get(1));
 
+        // Calculate the resulting matrix of "C = 10.5 * B - 8.0 * A"
         ArrayList matrixC = calculateNewMatrixData(matrices.get(0), 10.5, matrices.get(1), 8.0);
         String finalMatrixData = "C 6 5 " + MatrixUtils.buildNewRowWiseMatrix(matrices.get(0).getRows(), matrixC);
 
+        // Create a new matrix object for matrix C and build the matrices in the object
         ArrayList<String> finalMatrix = convertMatrixDataToArray(finalMatrixData);
         Matrix matrix = buildMatrixObject(finalMatrix);
         matrices.add(matrix);
         matrix.buildRowWiseMatrix();
         matrix.buildColumnWiseMatrix();
 
+        // create and write to new files for the calculated and transposed matrices.
         createNewTextFile("CalcMatrix");
         writeToFile("CalcMatrix.txt", matrices.get(2));
-        matrices.get(2).printRowWiseMatrix();
+        createNewTextFile("transposedMatrix");
+        writeToFile("transposedMatrix.txt",matrices.get(2).getVariableName(), matrices.get(2).getRows(), matrices.get(2).getColumns(), matrices.get(2).getMatrixRows());
+
+        printFormattedMatrix("Row Major Matrix: (Original Matrix 2)", matrices.get(1).getMatrixColumns());
+        printFormattedMatrix("Column Major Matrix: (Transposed Matrix 2)", matrices.get(1).getMatrixRows());
+
     }
 
+    public static void printFormattedMatrix(final String matrixName, final ArrayList<ArrayList<Double>> matrix){
+        System.out.println(matrixName);
+        for (ArrayList array: matrix){
+            System.out.println(array);
+        }
+        System.out.println();
+    }
     public static void createNewTextFile(final String fileName){
         try{
             File newFile = new File(fileName + ".txt");
@@ -87,11 +104,33 @@ public class Project1 {
         }
     }
 
+    public static void writeToFile(final String fileName, final String matrixName,  final int matrixRows, final int matrixColumns,
+                                   final ArrayList<ArrayList<Double>> matrixData){
+        try{
+            String matrixDataToWriteToFile = matrixName + " " + matrixColumns + " " + matrixRows + " ";
+            for (ArrayList<Double> array: matrixData){
+                for (Double doubleValue: array){
+                    matrixDataToWriteToFile += String.valueOf(doubleValue) + " ";
+                }
+            }
+            FileWriter fileWriter= new FileWriter(fileName);
+            fileWriter.write(matrixDataToWriteToFile);
+            fileWriter.close();
+            logger.info(LoggingUtils.formatLogMessage(fileName, "Successfully Wrote Data to File"));
+
+        } catch (IOException e) {
+            logger.warning(LoggingUtils.formatLogMessage(fileName, "Something went wrong when writing to the file")
+            );
+            e.printStackTrace();
+        }
+    }
+
+
     public static ArrayList<String> convertMatrixDataToArray(final String matrixData){
         ArrayList<String> matrixDataArrayList = new ArrayList<>();
         String[] matrixDataArray = matrixData.split(" ");
         for (String data: matrixDataArray){
-            if (data != ""){
+            if (!Objects.equals(data, "")){
                 matrixDataArrayList.add(data);
             }
         }
@@ -116,14 +155,7 @@ public class Project1 {
         return arrayListData;
     }
 
-    /**
-     * This is the method that calculates the C array from the assignment taking in two matrices and two coefficients as parameters.
-     * @param matrixA
-     * @param firstCoefficient
-     * @param matrixB
-     * @param secondCoefficient
-     * @return
-     */
+    // Calculate the "C" matrix from the assignment and take the two variables as coefficients
     public static ArrayList<Double> calculateNewMatrixData(Matrix matrixA, Double firstCoefficient, Matrix matrixB, Double secondCoefficient){
         ArrayList<Double> newMatrixData = new ArrayList<>();
         matrixA.multiplyMatrix(secondCoefficient);

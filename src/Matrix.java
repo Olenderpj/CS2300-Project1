@@ -84,7 +84,7 @@ public class Matrix {
         }
     }
 
-    private ArrayList<Double> findEveryNthElement(final int start, final int steps, final ArrayList matrix){
+    private ArrayList<Double> findEveryNthElement(final int start, final int steps, final ArrayList<Double> matrix){
         ArrayList<Double> rowData= new ArrayList<>();
 
         for(int i = start; i < matrix.size(); i += steps){
@@ -102,7 +102,7 @@ public class Matrix {
     }
 
     public void printRowWiseMatrix(){
-        for (Object row : matrixRows){
+        for (ArrayList<Double> row : matrixRows){
             System.out.println(row);
         }
     }
