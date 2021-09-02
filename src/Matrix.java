@@ -6,7 +6,7 @@ public class Matrix {
     private String variableName;
     private int rows;
     private int columns;
-    private ArrayList<Integer> matrixData;
+    private ArrayList<Double> matrixData;
     private ArrayList<Double> multipliedMatrixData;
     private ArrayList<ArrayList<Double>> matrixColumns = new ArrayList<>();
     private ArrayList<ArrayList<Double>> matrixRows = new ArrayList();
@@ -67,9 +67,9 @@ public class Matrix {
         int endIndex = rows;
 
         while (endIndex <= stopPoint){
-            List<Integer> sublist = matrixData.subList(startIndex, endIndex);
+            List<Double> sublist = matrixData.subList(startIndex, endIndex);
             ArrayList<Double> tempList = new ArrayList<>();
-            for (double value: sublist){
+            for (Double value: sublist){
                 tempList.add(value);
             }
             matrixColumns.add(tempList);
@@ -95,7 +95,7 @@ public class Matrix {
 
     public void multiplyMatrix(double coefficient){
         ArrayList<Double> newMatrix = new ArrayList<>();
-        for(Integer number: matrixData){
+        for(Double number: matrixData){
             newMatrix.add(number * coefficient);
         }
         multipliedMatrixData = newMatrix;
@@ -113,7 +113,7 @@ public class Matrix {
         metadata += rows + " ";
         metadata += columns + " ";
 
-        for (Integer data : matrixData) {
+        for (Double data : matrixData) {
            metadata += data.toString() + " ";
         }
         return metadata;

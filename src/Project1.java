@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -45,20 +46,18 @@ public class Project1 {
         createNewTextFile("SecondMatrix");
         writeToFile("SecondMatrix.txt", matrices.get(1));
 
-
         ArrayList matrixC = calculateNewMatrixData(matrices.get(0), 10.5, matrices.get(1), 8.0);
         String finalMatrixData = "C 6 5 " + MatrixUtils.buildNewRowWiseMatrix(matrices.get(0).getRows(), matrixC);
 
         ArrayList<String> finalMatrix = convertMatrixDataToArray(finalMatrixData);
         Matrix matrix = buildMatrixObject(finalMatrix);
         matrices.add(matrix);
-        matrix.buildColumnWiseMatrix();
+        matrix.buildRowWiseMatrix();
         matrix.buildColumnWiseMatrix();
 
         createNewTextFile("CalcMatrix");
-        writeToFile("CalcMatrix.text", matrices.get(2));
-
-
+        writeToFile("CalcMatrix.txt", matrices.get(2));
+        matrices.get(2).printRowWiseMatrix();
     }
 
     public static void createNewTextFile(final String fileName){
@@ -104,14 +103,15 @@ public class Project1 {
         matrix.setVariableName(matrixData.get(0))
                 .setRows(Integer.parseInt(matrixData.get(1)))
                 .setColumns(Integer.parseInt(matrixData.get(2)))
-                .setMatrixData(convertArraylistFromStringToInt(matrixData.subList(3, matrixData.size())));
+                .setMatrixData(convertArrayListFromStringToDouble(matrixData.subList(3, matrixData.size())));
         return matrix;
     }
-    public static ArrayList<Integer> convertArraylistFromStringToInt(final List<String> matrixDataAsString){
-        ArrayList<Integer> arrayListData = new ArrayList<>();
+
+    public static ArrayList<Double> convertArrayListFromStringToDouble(final List<String> matrixDataAsString){
+        ArrayList<Double> arrayListData = new ArrayList<>();
 
         for (String data: matrixDataAsString){
-            arrayListData.add(Integer.parseInt(data));
+            arrayListData.add(Double.parseDouble(data));
         }
         return arrayListData;
     }
@@ -124,7 +124,6 @@ public class Project1 {
      * @param secondCoefficient
      * @return
      */
-
     public static ArrayList<Double> calculateNewMatrixData(Matrix matrixA, Double firstCoefficient, Matrix matrixB, Double secondCoefficient){
         ArrayList<Double> newMatrixData = new ArrayList<>();
         matrixA.multiplyMatrix(secondCoefficient);
