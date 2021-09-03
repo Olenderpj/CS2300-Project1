@@ -40,9 +40,6 @@ public class Project1 {
             e.printStackTrace();
         }
 
-        printFormattedMatrix("First Matrix", matrices.get(0).getMatrixRows());
-        printFormattedMatrix("Second Matrix", matrices.get(1).getMatrixRows());
-
         createNewTextFile("FirstMatrix");
         writeToFile("FirstMatrix.txt", matrices.get(0));
         createNewTextFile("SecondMatrix");
@@ -65,8 +62,11 @@ public class Project1 {
         createNewTextFile("transposedMatrix");
         writeToFile("transposedMatrix.txt",matrices.get(2).getVariableName(), matrices.get(2).getRows(), matrices.get(2).getColumns(), matrices.get(2).getMatrixRows());
 
-        printFormattedMatrix("Row Major Matrix: (Original Matrix 2)", matrices.get(1).getMatrixColumns());
-        printFormattedMatrix("Column Major Matrix: (Transposed Matrix 2)", matrices.get(1).getMatrixRows());
+        printFormattedMatrix("First Matrix", matrices.get(0).getMatrixRows());
+        printFormattedMatrix("Second Matrix", matrices.get(1).getMatrixRows());
+        printFormattedMatrix("Calculated Matrix", matrices.get(2).getMatrixRows());
+        printFormattedMatrix("Column Major Matrix: (Transposed Matrix 2)", matrices.get(1).getMatrixColumns());
+
 
     }
 
